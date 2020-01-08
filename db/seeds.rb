@@ -8,13 +8,13 @@ end
 # dish (name, restaurant_id(optional)) - 10 dishes per restaurant
 
 # Gino's Pizzeria
-gino_dishes = ["penne pasta", "spaghetti", "pizza margherita", "pepperoni pizza", "pasta primavera", "chicken fettuccine", "chicken carbonara", "linguine with clam sauce", "breadsticks", "green salad"]
+gino_dishes = ["penne pasta", "spaghetti", "pizza margherita", "pepperoni pizza", "pasta primavera", "chicken fettuccine", "chicken carbonara", "linguine with clam sauce", "breadsticks", "green salad", "cheese pizzaszswae"]
 gino_dishes.each do |dish|
     Dish.find_or_create_by(name: dish, restaurant_id: 1)
 end
 
 # Mel's Diner
-mel_dishes = ["waffles", "ultimate cheeseburger", "country fried steak", "apple pie", "rib eye steak", "chicken alfredo", "grilled chicken sandwich", "cheesesteak sandwich", "cherry pie", "pancakes"]
+mel_dishes = ["waffles", "ultimate cheeseburger", "country fried steak", "apple pie", "rib eye steak", "chicken alfredo", "grilled chicken sandwich", "cheesesteak sandwich", "cherry pie", "pancakes", "blueberry pie", "chili con carne"]
 mel_dishes.each do |dish|
     Dish.find_or_create_by(name: dish, restaurant_id: 2)
 end
@@ -133,4 +133,13 @@ tags.each do |tag|
     Tag.find_or_create_by(name: tag)
 end
 
+10.times do 
+    Dish.all.each do |dish|
+        random_tag = (1..10).to_a.sample
+        DishTag.find_or_create_by(dish_id: dish.id, tag_id: random_tag)
+    end
+end
+
+# other dummy data
+Restaurant.find_or_create_by(name: 'McDonalds')
 
