@@ -146,5 +146,10 @@ mcdonalds = Restaurant.find_or_create_by(name: 'McDonalds')
 Dish.find_or_create_by(name: "french fries", restaurant_id: mcdonalds.id)
 Dish.find_or_create_by(name: "Big Mac", restaurant_id: mcdonalds.id)
 
+dish = Dish.find_by(name: 'BLT')
+tag = Tag.find_or_create_by(name: 'contains mayonnaise')
+
+DishTag.find_or_create_by(dish_id: dish.id, tag_id: tag.id)
+
 
 

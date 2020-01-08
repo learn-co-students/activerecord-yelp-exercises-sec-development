@@ -1,3 +1,5 @@
+require 'pry'
+
 class Dish < ActiveRecord::Base
     belongs_to :restaurant, optional: false
     has_many :dish_tags
@@ -5,11 +7,21 @@ class Dish < ActiveRecord::Base
     validates :name, presence: true
 
     def self.names
-        #all the names of the dishes
+        self.select(:name)
     end
 
     def self.max_tags
-        #single dish with the most tags
+        sql =   "SELECT dishes.*, COUNT(dish_tags.dish_id)
+                AS tag_count
+                FROM dishes
+                INNER JOIN dish_tags
+                ON dishes.id = dish_tags.dish_id
+                GROUP BY dish_tags.dish_id
+                ORDER BY tag_count DESC
+                LIMIT 1"
+
+        records_array = ActiveRecord::Base.connection.execute(sql)
+        records_array[0]
     end
 
     def self.untagged
