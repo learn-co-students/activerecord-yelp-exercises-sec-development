@@ -24,4 +24,36 @@ class Tag < ActiveRecord::Base
             errors.add(:name, "Name cannot be more than two words")
         end
     end
+
+    def self.most_common
+        #tag with the most associated dishes
+    end
+
+    def self.least_common
+        #tag with the fewest associated dishes
+    end
+
+    def self.unused
+        #all tags that haven't been used
+    end
+
+    def self.uncommon
+        #all tags that have been used fewer than 5 times
+    end
+
+    def self.popular
+        #top 5 tags by use
+    end
+
+    def restaurants
+        #restaurants that have used this tag on at least one dish
+    end
+
+    def top_restaurant
+        #restaurant that uses this tag the most
+    end
+
+    def dish_count
+        #how many dishes use this tag
+    end
 end

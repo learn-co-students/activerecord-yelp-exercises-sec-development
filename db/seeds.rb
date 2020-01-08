@@ -14,7 +14,7 @@ gino_dishes.each do |dish|
 end
 
 # Mel's Diner
-mel_dishes = ["waffles", "ultimate cheeseburger", "country fried steak", "apple pie", "rib eye steak", "chicken alfredo", "grilled chicken sandwich", "cheesesteak sandwich", "cherry pie", "pancakes", "blueberry pie", "chili con carne"]
+mel_dishes = ["waffles", "ultimate cheeseburger", "country fried steak", "apple pie", "rib eye steak", "chicken alfredo", "grilled chicken sandwich", "cheesesteak sandwich", "cherry pie", "pancakes", "blueberry pie", "chili con carne", "omelette", "cornbread", "french onion soup", "BLT", "club sandwich", "chicken avocado wrap", "onion rings", "fudge sundae", "chicken tenders"]
 mel_dishes.each do |dish|
     Dish.find_or_create_by(name: dish, restaurant_id: 2)
 end
@@ -50,7 +50,7 @@ bangkok_dishes.each do |dish|
 end
 
 # Good Company
-good_dishes = ["chocolate donut", "coconut donut", "apple fritter", "maple bar", "maple bacon donut", "bear claw", "turkey sandwich", "green salad", "cinnamon twist", "chicken noodle soup"]
+good_dishes = ["chocolate donut", "coconut donut", "apple fritter", "maple bar", "maple bacon donut", "bear claw", "turkey sandwich", "green salad", "cinnamon twist", "chicken noodle soup", "chocolate cake donut", "glazed donut", "glazed cake donut", "lemon glazed donut", "blueberry scone", "lemon poppy seed scone", "almond scone", "iceburg wedge salad", "hot chocolate", "dark roast coffee", "medium roast coffee", "cinnamon roll", "donut holes"]
 good_dishes.each do |dish|
     Dish.find_or_create_by(name: dish, restaurant_id: 8)
 end
@@ -141,5 +141,10 @@ end
 end
 
 # other dummy data
-Restaurant.find_or_create_by(name: 'McDonalds')
+mcdonalds = Restaurant.find_or_create_by(name: 'McDonalds')
+
+Dish.find_or_create_by(name: "french fries", restaurant_id: mcdonalds.id)
+Dish.find_or_create_by(name: "Big Mac", restaurant_id: mcdonalds.id)
+
+
 
