@@ -15,7 +15,7 @@ class Restaurant < ActiveRecord::Base
     end
 
     def self.group_by_dish_count
-        Restaurant.select('restaurants.*, COUNT(dishes.restaurant_id) AS dish_count').joins(:dishes).group("dishes.restaurant_id")
+        self.select('restaurants.*, COUNT(dishes.restaurant_id) AS dish_count').joins(:dishes).group("dishes.restaurant_id")
 
         # the above query returns an ActiveRecord_Relation object, which I can then call other ActiveRecord query methods on in my other methods in order to re-use this code and make it into a helper method
 
@@ -48,14 +48,43 @@ class Restaurant < ActiveRecord::Base
     def self.vegetarian
         # find all restaurants where all of the dishes are tagged vegetarian
 
-        # this method requires information from all 4 tables - may need to write some helper methods!!!
+        # sql = 'SELECT restaurants.*, COUNT(dishes.restaurant_id) AS dish_count FROM restaurants
+        # INNER JOIN dishes
+        # ON dishes.restaurant_id = restaurants.id
+        # INNER JOIN dish_tags
+        # ON dish_tags.dish_id = dishes.id
+        # INNER JOIN tags
+        # ON dish_tags.tag_id = tags.id
+        # WHERE tags.name = "vegetarian"
+        # GROUP BY restaurants.id'
+
+        # records_array = ActiveRecord::Base.connection.execute(sql)
+
+        # this SQL returns a table in which each restaurant has a column, dish_count, that is a count of all of the vegetarian dishes, but I can't seem to get it to work with ActiveRecord query methods
+
+        veg = Tag.find_by(name: "vegetarian")
+
+        self.select do |rest|
+            # go through each restaurant
+            rest.dishes.all? do |dish|
+                # go through each of that restaurant's dishes
+                dish.tags.include?(veg)
+                # if ALL of that restaurant's dishes include the vegetarian tag, then select it
+            end
+        end
+
+        # this is a triple nested loop!!! Seems pretty expensive, but I don't know how to make this work with SQL queries
     end
 
     def self.name_like(name)
         # find all restaurants where the name is like the name passed in
+
+        self.where("name LIKE ?", "%#{name}%")
     end
 
     def self.name_not_like(name)
         # find all restaurants where the name is not like the name passed in
+
+        self.where("name NOT LIKE ?", "%#{name}%")
     end
 end

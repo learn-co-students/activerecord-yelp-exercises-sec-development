@@ -133,11 +133,22 @@ tags.each do |tag|
     Tag.find_or_create_by(name: tag)
 end
 
-10.times do 
-    Dish.all.each do |dish|
-        random_tag = (1..10).to_a.sample
-        DishTag.find_or_create_by(dish_id: dish.id, tag_id: random_tag)
+10.times do
+    all_but_sushi = Restaurant.all.select do |rest|
+        rest.name != "Sushi Go"
     end
+    all_but_sushi.each do |rest|
+        rest.dishes.each do |dish|
+            random_tag = (1..10).to_a.sample
+            DishTag.find_or_create_by(dish_id: dish.id, tag_id: random_tag)
+        end
+    end
+end
+
+vegetarian = Tag.find_by(name: 'vegetarian')
+sushi = Restaurant.find_by(name: "Sushi Go")
+sushi.dishes.each do |dish|
+    DishTag.find_or_create_by(dish: dish, tag: vegetarian)
 end
 
 # other dummy data
@@ -150,6 +161,8 @@ dish = Dish.find_by(name: 'BLT')
 tag = Tag.find_or_create_by(name: 'contains mayonnaise')
 
 DishTag.find_or_create_by(dish_id: dish.id, tag_id: tag.id)
+
+Tag.find_or_create_by(name: 'contains nuts')
 
 
 
