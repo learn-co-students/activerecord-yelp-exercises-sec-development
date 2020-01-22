@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_13_153244) do
+ActiveRecord::Schema.define(version: 2020_01_14_200027) do
+
+  create_table "customers", force: :cascade do |t|
+    t.string "name"
+    t.float "lat"
+    t.float "lon"
+  end
+
+  create_table "dish_orders", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "dish_id"
+  end
 
   create_table "dish_tags", force: :cascade do |t|
     t.integer "dish_id"
@@ -20,10 +31,27 @@ ActiveRecord::Schema.define(version: 2019_09_13_153244) do
   create_table "dishes", force: :cascade do |t|
     t.text "name"
     t.integer "restaurant_id"
+    t.float "price"
+    t.float "cost"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "orderer_id"
+    t.integer "restaurant_id"
   end
 
   create_table "restaurants", force: :cascade do |t|
     t.text "name"
+    t.float "lat"
+    t.float "lon"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.text "content"
+    t.integer "rating"
+    t.datetime "date"
+    t.integer "reviewer_id"
+    t.integer "restaurant_id"
   end
 
   create_table "tags", force: :cascade do |t|
