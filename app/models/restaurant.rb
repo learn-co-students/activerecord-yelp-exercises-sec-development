@@ -7,6 +7,10 @@ class Restaurant < ActiveRecord::Base
     has_many :reviews
     validates :name, presence: true
 
+    # difference between a schema constraint and a validation - 
+    # - schema constraints are necessary if you want to prevent bad data from being written to your database
+    # - model validations are used to show your users error messages for fields that they can fix themselves
+
     scope :with_long_names, -> { where('LENGTH(name) > ?', 12) }
 
     def self.mcdonalds
@@ -198,5 +202,15 @@ class Restaurant < ActiveRecord::Base
         # (price - cost) * number of orders
 
         Dish.select("dishes.*, ((dishes.price - dishes.cost) * COUNT(dishes.id)) AS total_profit").joins("INNER JOIN dish_orders ON dishes.id = dish_orders.dish_id").joins("INNER JOIN restaurants ON dishes.restaurant_id = restaurants.id").where("restaurants.id = ?", self.id).group("dishes.id").order("total_profit DESC")
+    end
+
+    def tag_names
+        all_tags = []
+        
+        self.dishes.each do |dish|
+            all_tags << dish.tag_names
+        end
+
+        all_tags.flatten.uniq
     end
 end

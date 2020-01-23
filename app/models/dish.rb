@@ -1,7 +1,7 @@
 require 'pry'
 
 class Dish < ActiveRecord::Base
-    belongs_to :restaurant, optional: false
+    belongs_to :restaurant
     has_many :dish_orders
     has_many :orders, through: :dish_orders
     has_many :orderers, through: :orders
@@ -65,6 +65,18 @@ class Dish < ActiveRecord::Base
 
     def tag_names
         self.tags.pluck(:name)
+    end
+
+    def top_customer
+        # customer who has ordered a dish the most times
+
+        Customer.select("customers.*, COUNT(customers.id) AS order_count_by_customer").joins("INNER JOIN orders ON customers.id = orders.orderer_id").joins("INNER JOIN dish_orders ON orders.id = dish_orders.order_id").joins("INNER JOIN dishes ON dishes.id = dish_orders.dish_id").where("dishes.id = ?", self.id).group("customers.id").order("order_count_by_customer DESC").first
+    end
+
+    def self.most_ordered
+        # most ordered dish
+
+        self.select("dishes.*, COUNT(dishes.id) AS order_count").joins("INNER JOIN dish_orders ON dishes.id = dish_orders.dish_id").group("dishes.id").order("order_count DESC").first
     end
 
     # this method is moot because the specs require a validation that a dish cannot be tagged with the same tag twice (no duplicates)

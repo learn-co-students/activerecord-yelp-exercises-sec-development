@@ -1,6 +1,6 @@
 class DishTag < ActiveRecord::Base
-    belongs_to :dish, optional: true
-    belongs_to :tag, optional: true
+    belongs_to :dish
+    belongs_to :tag
     validate :duplicate_tags
 
     def duplicate_tags

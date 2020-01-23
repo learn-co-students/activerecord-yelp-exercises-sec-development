@@ -77,4 +77,20 @@ class Tag < ActiveRecord::Base
 
         self.dishes.count
     end
+
+    def nearest_restaurant(customer)
+        # nearest restaurant to the customer with that tag - this method would have to take in a customer has an argument, in order to compare locations
+        restaurants_with_tag = 
+            Restaurant.select do |rest|
+                rest.tag_names.include?(self.name)
+            end
+
+        restaurants_with_tag.sort{ |a, b| a.distance_from_customer(customer) - b.distance_from_customer(customer) }.first
+    end
+
+    def top_rated
+        # top 3 rated restaurants with dishes that have this tag
+
+        Restaurant.ordered_by_average_rating.select("restaurants.*").joins("INNER JOIN dishes ON restaurants.id = dishes.restaurant_id").joins("INNER JOIN dish_tags ON dishes.id = dish_tags.dish_id").joins("INNER JOIN tags ON dish_tags.tag_id = tags.id").where("tags.id = ?", self.id).limit(3)
+    end
 end

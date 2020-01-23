@@ -8,7 +8,7 @@ class Review < ActiveRecord::Base
     validate :reviewer_placed_an_order?
 
     def content_length
-        if self.content.length <= 10
+        if self.content.length < 10
             errors.add(:content, "A review's content must be at least 10 characters long")
         end
     end

@@ -86,7 +86,7 @@ olive_dishes.each do |dish|
 end
 
 # Las Tinajas
-tinajas_dishes = ["pimientos fritos", "tortilla de patata", "meat kebab", "Argentine steak with rice", "carne asada", "pollo asada", "arranque de rotena", "barra de pan", "papas fritas", "chorizo kebab"]
+tinajas_dishes = ["pimientos fritos", "tortilla de patata", "meat kebab", "Argentine steak with rice", "carne asada", "pollo asada", "arranque de rotena", "barra de pan", "papas fritas", "chorizo kebab", "paella negro"]
 tinajas_dishes.each do |dish|
     Dish.find_or_create_by(name: dish, restaurant_id: 12, price: random_cost * 3.0, cost: random_cost)
 end
@@ -144,6 +144,16 @@ tags = ["spicy", "vegetarian", "dessert", "gluten-free", "italian dish", "americ
 tags.each do |tag|
     Tag.find_or_create_by(name: tag)
 end
+
+exotic = Tag.create!(name: "exotic fare")
+exoticDish1 = Dish.find_by(name: "papaya salad")
+DishTag.create!(dish_id: exoticDish1.id, tag_id: exotic.id)
+exoticDish2 = Dish.find_by(name: "swordfish")
+DishTag.create!(dish_id: exoticDish2.id, tag_id: exotic.id)
+exoticDish3 = Dish.find_by(name: "paella negro")
+DishTag.create!(dish_id: exoticDish3.id, tag_id: exotic.id)
+
+
 
 10.times do
     all_but_sushi = Restaurant.all.select do |rest|

@@ -1,8 +1,8 @@
 require 'pry'
 
 class DishOrder < ActiveRecord::Base
-    belongs_to :order, optional: false
-    belongs_to :dish, optional: false
+    belongs_to :order
+    belongs_to :dish
     validate :order_from_one_restaurant
     validate :dish_exists?
     validate :order_exists?
