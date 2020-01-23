@@ -21,7 +21,7 @@ class DishOrder < ActiveRecord::Base
     end
 
     def dish_exists?
-        dish = Dish.find(self.dish_id)
+        dish = Dish.find_by(id: self.dish_id)
 
         if !dish
             errors.add(:dish, "Dish not found")
@@ -29,7 +29,7 @@ class DishOrder < ActiveRecord::Base
     end
 
     def order_exists?
-        order = Order.find(self.order_id)
+        order = Order.find_by(id: self.order_id)
 
         if !order
             errors.add(:order, "Order not found")

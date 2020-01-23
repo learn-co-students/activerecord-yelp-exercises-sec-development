@@ -1,13 +1,22 @@
 require 'pry'
 
 class Dish < ActiveRecord::Base
-    belongs_to :restaurant
+    belongs_to :restaurant, optional: false
     has_many :dish_orders
     has_many :orders, through: :dish_orders
     has_many :orderers, through: :orders
     has_many :dish_tags
     has_many :tags, through: :dish_tags
     validates :name, presence: true
+    validate :restaurant_exists?
+
+    def restaurant_exists?
+        restaurant = Restaurant.find_by(id: self.restaurant_id)
+
+        if !restaurant
+            errors.add(:restaurant_id, "A dish must belong to an existing restaurant")
+        end
+    end
 
     def self.names
         self.pluck(:name)
